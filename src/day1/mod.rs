@@ -16,7 +16,7 @@ impl CaloriesInventory {
             }
             acc
         });
-        snacks.sort_by(|a, b| a.cmp(b).reverse());
+        snacks.sort_by(|a, b| b.cmp(a));
         Self { snacks }
     }
 

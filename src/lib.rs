@@ -1,10 +1,7 @@
 mod day1;
 mod day2;
 
-pub const PUZZLES: [Puzzle; 2] = [
-    day1::PUZZLE,
-    day2::PUZZLE,
-];
+pub const PUZZLES: [Puzzle; 2] = [day1::PUZZLE, day2::PUZZLE];
 
 pub struct Puzzle {
     pub name: &'static str,
@@ -27,10 +24,16 @@ macro_rules! puzzle {
 
         #[cfg(test)]
         #[test]
-        fn test() {
-            let test = include_str!("test.txt");
-            assert_eq!(<$solver>::ingest(test).part_one(), $part_one_test);
-            assert_eq!(<$solver>::ingest(test).part_two(), $part_two_test);
+        fn part_one() {
+            let test_puzzle = include_str!("test.txt");
+            assert_eq!(<$solver>::ingest(test_puzzle).part_two(), $part_two_test);
+        }
+
+        #[cfg(test)]
+        #[test]
+        fn part_two() {
+            let test_puzzle = include_str!("test.txt");
+            assert_eq!(<$solver>::ingest(test_puzzle).part_two(), $part_two_test);
         }
     };
 }
