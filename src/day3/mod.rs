@@ -25,14 +25,12 @@ impl Solver {
         self.rucksacks
             .chunks_exact(3)
             .map(|group| {
-                let a = group[0].left.union(&group[0].right).collect::<HashSet<_>>();
-                let b = group[1].left.union(&group[1].right).collect::<HashSet<_>>();
-                let c = group[2].left.union(&group[2].right).collect::<HashSet<_>>();
-                a.intersection(&b)
-                    .copied()
-                    .collect::<HashSet<_>>()
-                    .intersection(&c)
-                    .copied()
+                group
+                    .iter()
+                    .map(|r| r.left.union(&r.right).copied().collect::<HashSet<_>>())
+                    .reduce(|acc, next| acc.intersection(&next).copied().collect::<HashSet<_>>())
+                    .unwrap()
+                    .iter()
                     .sum::<usize>()
             })
             .sum()
@@ -46,19 +44,18 @@ pub struct Rucksac {
 
 impl Rucksac {
     pub fn parse(line: &str) -> Self {
-        let snacks = line.chars().map(priority).collect::<Vec<usize>>();
+        let snacks = line
+            .chars()
+            .map(|snack| match snack {
+                l @ 'a'..='z' => (l as u8 - b'a' + 1) as _,
+                u @ 'A'..='Z' => (u as u8 - b'A' + 27) as _,
+                _ => unreachable!(),
+            })
+            .collect::<Vec<usize>>();
         let mid = snacks.len() / 2;
         Self {
             left: HashSet::from_iter(snacks.iter().copied().take(mid)),
             right: HashSet::from_iter(snacks.iter().copied().skip(mid).take(mid)),
         }
-    }
-}
-
-pub fn priority(shack: char) -> usize {
-    match shack {
-        l @ 'a'..='z' => (l as u8 - b'a' + 1) as _,
-        u @ 'A'..='Z' => (u as u8 - b'A' + 27) as _,
-        _ => unreachable!(),
     }
 }
