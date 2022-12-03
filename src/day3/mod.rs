@@ -52,10 +52,10 @@ impl Rucksac {
                 _ => unreachable!(),
             })
             .collect::<Vec<usize>>();
-        let mid = snacks.len() / 2;
+        let (left, right) = snacks.split_at(snacks.len() / 2);
         Self {
-            left: HashSet::from_iter(snacks.iter().copied().take(mid)),
-            right: HashSet::from_iter(snacks.iter().copied().skip(mid).take(mid)),
+            left: HashSet::from_iter(left.iter().copied()),
+            right: HashSet::from_iter(right.iter().copied()),
         }
     }
 }
