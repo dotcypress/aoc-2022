@@ -11,11 +11,11 @@ impl Solver {
     fn ingest(input: &str) -> Self {
         let assigments = input
             .lines()
-            .map(|line| line.split_once(",").unwrap())
+            .map(|line| line.split_once(',').unwrap())
             .map(|(a, b)| {
-                let (start, end) = a.split_once("-").unwrap();
+                let (start, end) = a.split_once('-').unwrap();
                 let a = RangeInclusive::new(start.parse().unwrap(), end.parse().unwrap());
-                let (start, end) = b.split_once("-").unwrap();
+                let (start, end) = b.split_once('-').unwrap();
                 let b = RangeInclusive::new(start.parse().unwrap(), end.parse().unwrap());
                 (a, b)
             })
@@ -27,8 +27,8 @@ impl Solver {
         self.assigments
             .iter()
             .filter(|(a, b)| {
-                (a.contains(&b.start()) && a.contains(&b.end()))
-                    || (b.contains(&a.start()) && b.contains(&a.end()))
+                (a.contains(b.start()) && a.contains(b.end()))
+                    || (b.contains(a.start()) && b.contains(a.end()))
             })
             .count()
     }
@@ -37,10 +37,10 @@ impl Solver {
         self.assigments
             .iter()
             .filter(|(a, b)| {
-                a.contains(&b.start())
-                    || a.contains(&b.end())
-                    || b.contains(&a.start())
-                    || b.contains(&a.end())
+                a.contains(b.start())
+                    || a.contains(b.end())
+                    || b.contains(a.start())
+                    || b.contains(a.end())
             })
             .count()
     }

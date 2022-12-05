@@ -2,12 +2,19 @@ mod day1;
 mod day2;
 mod day3;
 mod day4;
+mod day5;
 
-pub const PUZZLES: [Puzzle; 4] = [day1::PUZZLE, day2::PUZZLE, day3::PUZZLE, day4::PUZZLE];
+pub const PUZZLES: [Puzzle; 5] = [
+    day1::PUZZLE,
+    day2::PUZZLE,
+    day3::PUZZLE,
+    day4::PUZZLE,
+    day5::PUZZLE,
+];
 
 pub struct Puzzle {
     pub name: &'static str,
-    pub solve: fn() -> (usize, usize),
+    pub solve: fn() -> (String, String),
 }
 
 #[macro_export]
@@ -18,8 +25,8 @@ macro_rules! puzzle {
             solve: || {
                 let puzzle = include_str!("puzzle.txt");
                 (
-                    <$solver>::ingest(puzzle).part_one(),
-                    <$solver>::ingest(puzzle).part_two(),
+                    <$solver>::ingest(puzzle).part_one().to_string(),
+                    <$solver>::ingest(puzzle).part_two().to_string(),
                 )
             },
         };
