@@ -81,8 +81,9 @@ impl Crates {
 
     pub fn single_move(&mut self, op: Op) {
         for _ in 0..op.amount {
-            let c = self.layout[op.from].pop().unwrap();
-            self.layout[op.to].push(c)
+            self.layout[op.from]
+                .pop()
+                .map(|c| self.layout[op.to].push(c));
         }
     }
 
