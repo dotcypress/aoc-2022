@@ -3,13 +3,15 @@ mod day2;
 mod day3;
 mod day4;
 mod day5;
+mod day6;
 
-pub const PUZZLES: [Puzzle; 5] = [
+pub const PUZZLES: [Puzzle; 6] = [
     day1::PUZZLE,
     day2::PUZZLE,
     day3::PUZZLE,
     day4::PUZZLE,
     day5::PUZZLE,
+    day6::PUZZLE,
 ];
 
 pub struct Puzzle {
