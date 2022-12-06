@@ -15,19 +15,19 @@ impl Solver {
     }
 
     fn part_one(self) -> usize {
-        self.packet_start(4)
+        self.packet_start_at(4)
     }
 
     fn part_two(self) -> usize {
-        self.packet_start(14)
+        self.packet_start_at(14)
     }
 
-    pub fn packet_start(self, window: usize) -> usize {
+    pub fn packet_start_at(self, window: usize) -> usize {
         self.stream
             .windows(window)
             .map(|w| HashSet::<char>::from_iter(w.iter().copied()).len())
             .enumerate()
-            .skip_while(|(_, l)| l < &window)
+            .skip_while(|(_, l)| *l < window)
             .next()
             .map(|(idx, _)| idx + window)
             .unwrap()
