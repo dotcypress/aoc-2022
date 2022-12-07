@@ -5,7 +5,7 @@ puzzle!("Day -: ---", Solver, 0, 0);
 struct Solver {}
 
 impl Solver {
-    fn ingest(_input: &str) -> Self {
+    fn ingest(input: &str) -> Self {
         Self {}
     }
 

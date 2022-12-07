@@ -27,8 +27,7 @@ impl Solver {
             .windows(window)
             .map(|w| HashSet::<char>::from_iter(w.iter().copied()).len())
             .enumerate()
-            .skip_while(|(_, l)| *l < window)
-            .next()
+            .find(|(_, l)| *l >= window)
             .map(|(idx, _)| idx + window)
             .unwrap()
     }
