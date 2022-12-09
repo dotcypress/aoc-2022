@@ -1,3 +1,5 @@
+use std::ops::Sub;
+
 mod day1;
 mod day2;
 mod day3;
@@ -6,8 +8,9 @@ mod day5;
 mod day6;
 mod day7;
 mod day8;
+mod day9;
 
-pub const PUZZLES: [Puzzle; 8] = [
+pub const PUZZLES: [Puzzle; 9] = [
     day1::PUZZLE,
     day2::PUZZLE,
     day3::PUZZLE,
@@ -16,6 +19,7 @@ pub const PUZZLES: [Puzzle; 8] = [
     day6::PUZZLE,
     day7::PUZZLE,
     day8::PUZZLE,
+    day9::PUZZLE,
 ];
 
 pub struct Puzzle {
@@ -54,18 +58,51 @@ macro_rules! puzzle {
 }
 
 #[derive(Debug, Copy, Clone, PartialEq, Eq, Hash)]
+pub enum Dir {
+    Up,
+    Right,
+    Down,
+    Left,
+}
+
+#[derive(Debug, Copy, Clone, PartialEq, Eq, Hash, Default)]
 pub struct Point {
     pub x: isize,
     pub y: isize,
 }
 
 impl Point {
+    pub fn zero() -> Self {
+        Point::default()
+    }
+
     pub const fn new(x: isize, y: isize) -> Self {
         Self { x, y }
     }
 
     pub fn parse(input: &str) -> Self {
         let (x, y) = input.split_once(',').unwrap();
-        Self::new(x.parse().unwrap(), y.parse().unwrap())
+        Self::new(x.parse().unwrap_or_default(), y.parse().unwrap_or_default())
+    }
+
+    pub fn offset(&self, dx: isize, dy: isize) -> Self {
+        Self::new(self.x + dx, self.y + dy)
+    }
+
+    pub fn neighbor_at(&self, dir: Dir) -> Self {
+        match dir {
+            Dir::Up => Self::new(self.x, self.y + 1),
+            Dir::Right => Self::new(self.x + 1, self.y),
+            Dir::Down => Self::new(self.x, self.y - 1),
+            Dir::Left => Self::new(self.x - 1, self.y),
+        }
+    }
+}
+
+impl Sub for Point {
+    type Output = Self;
+
+    fn sub(self, rhs: Self) -> Self::Output {
+        Self::new(self.x - rhs.x, self.y - rhs.y)
     }
 }
