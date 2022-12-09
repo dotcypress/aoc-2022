@@ -24,40 +24,32 @@ impl Solver {
     }
 
     fn part_one(self) -> usize {
-        Field::new(2).simulate(&self.inst)
+        self.simulate(2)
     }
 
     fn part_two(self) -> usize {
-        Field::new(10).simulate(&self.inst)
+        self.simulate(10)
     }
-}
 
-pub struct Field {
-    rope: Vec<Point>,
-}
+    pub fn simulate(&self, knots: usize) -> usize {
+        let mut tail_track = HashSet::new();
+        tail_track.insert(Point::zero());
 
-impl Field {
-    pub fn new(knots: usize) -> Self {
         let mut rope = Vec::with_capacity(knots);
         for _ in 0..knots {
             rope.push(Point::zero());
         }
-        Self { rope }
-    }
 
-    pub fn simulate(mut self, inst: &[(Dir, usize)]) -> usize {
-        let mut tail_track = HashSet::new();
-        tail_track.insert(Point::zero());
-        for (dir, steps) in inst {
+        for (dir, steps) in &self.inst {
             for _ in 0..*steps {
-                self.rope[0] = self.rope[0].neighbor_at(*dir);
-                for idx in 1..self.rope.len() {
-                    let delta = self.rope[idx - 1] - self.rope[idx];
+                rope[0] = rope[0].neighbor_at(*dir);
+                for idx in 1..rope.len() {
+                    let delta = rope[idx - 1] - rope[idx];
                     if delta.x.abs() > 1 || delta.y.abs() > 1 {
-                        self.rope[idx] = self.rope[idx].offset(delta.x.signum(), delta.y.signum());
+                        rope[idx] = rope[idx].offset(delta.x.signum(), delta.y.signum());
                     }
                 }
-                tail_track.insert(*self.rope.last().unwrap());
+                tail_track.insert(*rope.last().unwrap());
             }
         }
         tail_track.len()
