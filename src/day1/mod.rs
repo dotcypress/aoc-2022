@@ -1,12 +1,12 @@
 use crate::*;
 
-puzzle!("Day 1: Calorie Counting", CaloriesInventory, 24000, 45000);
+puzzle!("Day 1: Calorie Counting", Solver, 24000, 45000);
 
-struct CaloriesInventory {
+struct Solver {
     snacks: Vec<usize>,
 }
 
-impl CaloriesInventory {
+impl Solver {
     fn ingest(input: &str) -> Self {
         let mut snacks = input.lines().fold(vec![0], |mut acc, line| {
             if line.is_empty() {

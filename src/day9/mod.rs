@@ -13,10 +13,10 @@ impl Solver {
         let inst = input
             .lines()
             .map(|l| match l.split_once(' ') {
-                Some(("U", steps)) => (Dir::Up, steps.parse().unwrap()),
-                Some(("R", steps)) => (Dir::Right, steps.parse().unwrap()),
-                Some(("D", steps)) => (Dir::Down, steps.parse().unwrap()),
-                Some(("L", steps)) => (Dir::Left, steps.parse().unwrap()),
+                Some(("U", steps)) => (Dir::North, steps.parse().unwrap()),
+                Some(("R", steps)) => (Dir::East, steps.parse().unwrap()),
+                Some(("D", steps)) => (Dir::South, steps.parse().unwrap()),
+                Some(("L", steps)) => (Dir::West, steps.parse().unwrap()),
                 _ => unreachable!(),
             })
             .collect();
@@ -46,7 +46,7 @@ impl Solver {
                 for idx in 1..rope.len() {
                     let delta = rope[idx - 1] - rope[idx];
                     if delta.x.abs() > 1 || delta.y.abs() > 1 {
-                        rope[idx] = rope[idx].offset(delta.x.signum(), delta.y.signum());
+                        rope[idx] = rope[idx] + delta.unit();
                     }
                 }
                 tail_track.insert(*rope.last().unwrap());
