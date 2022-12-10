@@ -21,15 +21,17 @@ impl Solver {
         Self { prog }
     }
 
-    fn part_one(self) -> usize {
-        let (_, _, ret) = self.prog.iter().fold((1, 1, 0), |(pc, x, ret), val| {
+    fn part_one(self) -> isize {
+        let mut x = 1;
+        let mut strength = 0;
+        for (cycle, op) in self.prog.iter().enumerate() {
+            let pc = cycle as isize + 1;
             if pc == 20 || (pc - 20) % 40 == 0 {
-                (pc + 1, x + val, ret + x * pc as isize)
-            } else {
-                (pc + 1, x + val, ret)
+                strength += x * pc as isize;
             }
-        });
-        ret as _
+            x += op;
+        }
+        strength
     }
 
     fn part_two(self) -> String {
