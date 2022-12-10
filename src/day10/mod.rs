@@ -26,7 +26,7 @@ impl Solver {
         let mut strength = 0;
         for (cycle, op) in self.prog.iter().enumerate() {
             let pc = cycle as isize + 1;
-            if pc == 20 || (pc - 20) % 40 == 0 {
+            if pc % 40 == 20 {
                 strength += x * pc as isize;
             }
             x += op;
