@@ -48,7 +48,6 @@ impl Solver {
 pub enum Op {
     Add(usize),
     Mul(usize),
-    Double,
     Square,
 }
 
@@ -57,7 +56,6 @@ impl Op {
         match self {
             Op::Add(val) => x + val,
             Op::Mul(val) => x * val,
-            Op::Double => x + x,
             Op::Square => x * x,
         }
     }
@@ -79,7 +77,6 @@ impl Monkey {
         let items = list.split(", ").map(|x| x.parse().unwrap()).collect();
         let op = match lines.next().unwrap().split_at(19).1 {
             "old * old" => Op::Square,
-            "old + old" => Op::Double,
             other => match other.split_at(4).1.split_once(' ') {
                 Some(("+", x)) => Op::Add(x.parse().unwrap()),
                 Some(("*", x)) => Op::Mul(x.parse().unwrap()),
