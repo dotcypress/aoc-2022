@@ -6,3 +6,4 @@ authors = ["Vitaly Domnikov <oss@vitaly.codes>"]
 license = "MIT/Apache-2.0"
 
 [dependencies]
+num-bigint = "0.4.3"

@@ -3,6 +3,7 @@ use std::env;
 
 mod day1;
 mod day10;
+mod day11;
 mod day2;
 mod day3;
 mod day4;
@@ -12,7 +13,7 @@ mod day7;
 mod day8;
 mod day9;
 
-pub const PUZZLES: [Puzzle; 10] = [
+pub const PUZZLES: [Puzzle; 11] = [
     day1::PUZZLE,
     day2::PUZZLE,
     day3::PUZZLE,
@@ -23,6 +24,7 @@ pub const PUZZLES: [Puzzle; 10] = [
     day8::PUZZLE,
     day9::PUZZLE,
     day10::PUZZLE,
+    day11::PUZZLE,
 ];
 
 fn main() {
@@ -33,7 +35,7 @@ fn main() {
             .collect::<String>()
             .parse::<usize>()
             .unwrap_or_default();
-        if day <= PUZZLES.len() {
+        if day > 0 && day <= PUZZLES.len() {
             let puzzle = &PUZZLES[day - 1];
             let name = puzzle.name;
             let (part_one, part_two) = (puzzle.solve)();
