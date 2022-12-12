@@ -4,6 +4,7 @@ use std::env;
 mod day1;
 mod day10;
 mod day11;
+mod day12;
 mod day2;
 mod day3;
 mod day4;
@@ -13,7 +14,7 @@ mod day7;
 mod day8;
 mod day9;
 
-pub const PUZZLES: [Puzzle; 11] = [
+pub const PUZZLES: [Puzzle; 12] = [
     day1::PUZZLE,
     day2::PUZZLE,
     day3::PUZZLE,
@@ -25,6 +26,7 @@ pub const PUZZLES: [Puzzle; 11] = [
     day9::PUZZLE,
     day10::PUZZLE,
     day11::PUZZLE,
+    day12::PUZZLE,
 ];
 
 fn main() {

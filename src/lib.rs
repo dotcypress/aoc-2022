@@ -104,7 +104,11 @@ impl Point {
     }
 
     pub const fn neighbors(&self) -> Neighbors {
-        Neighbors::new(*self)
+        Neighbors::new(*self, false)
+    }
+
+    pub const fn close_neighbors(&self) -> Neighbors {
+        Neighbors::new(*self, true)
     }
 }
 
@@ -127,6 +131,7 @@ impl Add for Point {
 pub struct Neighbors {
     origin: Point,
     next: usize,
+    close_only: bool,
 }
 
 impl Neighbors {
@@ -141,8 +146,12 @@ impl Neighbors {
         Point::zero().neighbor_at(Dir::NorthWest),
     ];
 
-    pub const fn new(origin: Point) -> Self {
-        Self { origin, next: 0 }
+    pub const fn new(origin: Point, close_only: bool) -> Self {
+        Self {
+            origin,
+            next: 0,
+            close_only,
+        }
     }
 }
 
@@ -154,7 +163,11 @@ impl Iterator for Neighbors {
             return None;
         }
         let offset = Self::NEIGHBORHOOD[self.next];
-        self.next += 1;
+        if self.close_only {
+            self.next += 2;
+        } else {
+            self.next += 1;
+        }
         Some(self.origin + offset)
     }
 }
