@@ -26,9 +26,12 @@ impl Solver {
         let magic: usize = self.monkeys.iter().map(|m| m.test.0).product();
         let mut monkey_business: Vec<_> = self.monkeys.iter().map(|_| 0_usize).collect();
         for _ in 0..rounds {
-            for idx in 0..self.monkeys.len() {
+            for (idx, business) in monkey_business
+                .iter_mut()
+                .enumerate()
+                .take(self.monkeys.len())
+            {
                 while let Some(item) = self.monkeys[idx].items.pop_front() {
-                    monkey_business[idx] += 1;
                     let worry = (self.monkeys[idx].op.perform(item) % magic) / worry_div;
                     let rec = if (worry % self.monkeys[idx].test.0) == 0 {
                         self.monkeys[idx].test.1
@@ -36,6 +39,7 @@ impl Solver {
                         self.monkeys[idx].test.2
                     };
                     self.monkeys[rec].items.push_back(worry);
+                    *business += 1;
                 }
             }
         }

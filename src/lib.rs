@@ -1,4 +1,4 @@
-use std::ops::*;
+use std::{iter::Zip, ops::*};
 
 pub struct Puzzle {
     pub name: &'static str,
@@ -169,5 +169,86 @@ impl Iterator for Neighbors {
             self.next += 1;
         }
         Some(self.origin + offset)
+    }
+}
+
+#[derive(Debug, Default)]
+pub struct Field<T: Default> {
+    data: Vec<T>,
+    width: usize,
+    height: usize,
+}
+
+impl<T: Default> Field<T> {
+    pub fn parse(input: &str, parse_row: fn(&str) -> Vec<T>) -> Self {
+        let mut height = 0;
+        let mut data = vec![];
+        for line in input.lines() {
+            height += 1;
+            data.extend(parse_row(line));
+        }
+        let width = data.len() / height;
+        Self {
+            data,
+            height,
+            width,
+        }
+    }
+
+    pub fn points(&self) -> FieldPointsIterator {
+        FieldPointsIterator {
+            pos: 0,
+            width: self.width,
+            len: self.width * self.height,
+        }
+    }
+
+    pub fn get(&self, at: Point) -> Option<&T> {
+        self.lookup(at).map(|idx| &self.data[idx])
+    }
+
+    pub fn get_mut(&mut self, at: Point) -> Option<&mut T> {
+        self.lookup(at).map(|idx| &mut self.data[idx])
+    }
+
+    pub fn set(&mut self, at: Point, val: T) {
+        if let Some(idx) = self.lookup(at) {
+            self.data[idx] = val
+        }
+    }
+
+    pub fn iter(&self) -> Zip<FieldPointsIterator, std::slice::Iter<'_, T>> {
+        self.points().zip(self.data.iter())
+    }
+
+    pub fn iter_mut(&mut self) -> Zip<FieldPointsIterator, std::slice::IterMut<'_, T>> {
+        self.points().zip(self.data.iter_mut())
+    }
+
+    fn lookup(&self, at: Point) -> Option<usize> {
+        if at.x < 0 || at.y < 0 || at.x >= self.width as _ || at.y >= self.height as _ {
+            None
+        } else {
+            Some(at.x as usize + at.y as usize * self.width)
+        }
+    }
+}
+
+pub struct FieldPointsIterator {
+    width: usize,
+    len: usize,
+    pos: usize,
+}
+
+impl Iterator for FieldPointsIterator {
+    type Item = Point;
+
+    fn next(&mut self) -> Option<Self::Item> {
+        if self.pos >= self.len {
+            return None;
+        }
+        let point = Point::new((self.pos % self.width) as _, (self.pos / self.width) as _);
+        self.pos += 1;
+        Some(point)
     }
 }

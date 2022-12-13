@@ -30,7 +30,7 @@ pub const PUZZLES: [Puzzle; 12] = [
 ];
 
 fn main() {
-    if let Some(day) = env::args().skip(1).next() {
+    if let Some(day) = env::args().nth(1) {
         let day = day
             .chars()
             .filter(|c| c.is_numeric())
